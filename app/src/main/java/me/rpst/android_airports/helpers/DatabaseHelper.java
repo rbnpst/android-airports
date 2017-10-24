@@ -20,6 +20,16 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     private static final String DATABASE_NAME = "airports.sqlite";
     private static final int DATABASE_VERSION = 1;
 
+    private String[] columns = {
+            "icao",
+            "name",
+            "longitude",
+            "latitude",
+            "elevation",
+            "iso_country",
+            "municipality"
+    };
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -41,6 +51,24 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         }
 
         return airports;
+    }
+
+    public Airport getSingleAirportWithIcao(String icao) {
+        Airport airport = null;
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.query("airports", columns, "icao = '" + icao + "'", null, null, null, null);
+        if (c.moveToFirst()) {
+            airport = new Airport().withIcao(c.getString(c.getColumnIndex("icao")))
+                    .withName(c.getString(c.getColumnIndex("name")))
+                    .withLongitude(c.getDouble(c.getColumnIndex("longitude")))
+                    .withLatitude(c.getDouble(c.getColumnIndex("latitude")))
+                    .withElevation(c.getDouble(c.getColumnIndex("elevation")))
+                    .withIsoCountry(c.getString(c.getColumnIndex("iso_country")))
+                    .withMunicipality(c.getString(c.getColumnIndex("municipality")));
+        }
+
+        return airport;
     }
 
 }
