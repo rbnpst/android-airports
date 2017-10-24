@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import java.util.List;
 
@@ -20,11 +21,16 @@ public class MainActivity extends AppCompatActivity implements BaseAirportItemAd
     private BaseAirportItemAdapter mAdapter;
     private List<Airport> airports;
     private DatabaseHelper db;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(mToolbar);
 
         mRecyclerview = (RecyclerView) findViewById(R.id.recycler_view_airports);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
