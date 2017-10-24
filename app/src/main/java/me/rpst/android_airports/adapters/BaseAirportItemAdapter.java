@@ -4,10 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.zhukic.sectionedrecyclerview.SectionedRecyclerViewAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.rpst.android_airports.models.Airport;
@@ -17,14 +20,17 @@ import me.rpst.android_airports.R;
  * Created by robin on 22/10/2017.
  */
 
-public abstract class BaseAirportItemAdapter extends SectionedRecyclerViewAdapter<BaseAirportItemAdapter.SubheaderHolder, BaseAirportItemAdapter.AirportViewHolder> {
+public abstract class BaseAirportItemAdapter extends SectionedRecyclerViewAdapter<BaseAirportItemAdapter.SubheaderHolder, BaseAirportItemAdapter.AirportViewHolder> implements Filterable {
 
-    List<Airport> airports;
+    List<Airport> mAirports;
+    List<Airport> mFilteredAirports;
+    Filter filter;
 
     OnItemClickListener onItemClickListener;
 
-    public BaseAirportItemAdapter(List<Airport> airports) {
-        this.airports = airports;
+    public BaseAirportItemAdapter(List<Airport> mAirports) {
+        this.mAirports = mAirports;
+        this.mFilteredAirports = mAirports;
     }
 
     @Override
@@ -44,7 +50,7 @@ public abstract class BaseAirportItemAdapter extends SectionedRecyclerViewAdapte
 
     @Override
     public int getItemSize() {
-        return airports.size();
+        return mAirports.size();
     }
 
     static class SubheaderHolder extends RecyclerView.ViewHolder {
@@ -77,4 +83,14 @@ public abstract class BaseAirportItemAdapter extends SectionedRecyclerViewAdapte
     public interface OnItemClickListener {
         void onItemClick(Airport airport);
     }
+
+    @Override
+    public Filter getFilter() {
+//        if (filter == null) {
+//            filter = new AirportFilter();
+//        }
+//        return filter;
+        return null;
+    }
+
 }
