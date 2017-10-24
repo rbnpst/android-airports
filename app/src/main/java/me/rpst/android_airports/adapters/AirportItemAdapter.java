@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import me.rpst.android_airports.Airport;
+import me.rpst.android_airports.models.Airport;
 
 /**
  * Created by robin on 23/10/2017.
@@ -26,7 +26,7 @@ public class AirportItemAdapter extends BaseAirportItemAdapter {
     public boolean onPlaceSubheaderBetweenItems(int position) {
         Airport airport = airports.get(position);
         Airport nextAirport = airports.get(position);
-        return airport.getFirstLetterOfIcao().equals(nextAirport.getFirstLetterOfIcao());
+        return !airport.getFirstLetterOfIcao().equals(nextAirport.getFirstLetterOfIcao());
     }
 
     @Override
@@ -36,9 +36,16 @@ public class AirportItemAdapter extends BaseAirportItemAdapter {
 
     @Override
     public void onBindItemViewHolder(AirportViewHolder holder, int itemPosition) {
-        Airport airport = airports.get(itemPosition);
+        final Airport airport = airports.get(itemPosition);
         holder.textName.setText(airport.getName());
         holder.textIcao.setText(airport.getIcao());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.onItemClick(airport);
+            }
+        });
     }
 
     @Override

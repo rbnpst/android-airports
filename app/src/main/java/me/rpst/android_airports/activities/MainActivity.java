@@ -1,23 +1,25 @@
 package me.rpst.android_airports.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import me.rpst.android_airports.Airport;
+import me.rpst.android_airports.models.Airport;
 import me.rpst.android_airports.R;
 import me.rpst.android_airports.adapters.AirportItemAdapter;
 import me.rpst.android_airports.adapters.BaseAirportItemAdapter;
+import me.rpst.android_airports.helpers.DatabaseHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BaseAirportItemAdapter.OnItemClickListener {
 
     private RecyclerView mRecyclerview;
     private BaseAirportItemAdapter mAdapter;
     private List<Airport> airports;
+    private DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,29 +30,19 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerview.setHasFixedSize(true);
 
-        airports = new ArrayList<>();
+        db = new DatabaseHelper(this);
 
-        Airport a1 = new Airport().withIcao("EHAM")
-                .withName("Schiphol")
-                .withLongitude(4.768274)
-                .withLatitude(52.310539)
-                .withElevation(-12.0)
-                .withIsoCountry("NL")
-                .withMunicipality("NL");
-
-        airports.add(a1);
-
-        Airport a2 = new Airport().withIcao("LSZH")
-                .withName("Zurich Airport")
-                .withLongitude(4.768274)
-                .withLatitude(52.310539)
-                .withElevation(-12.0)
-                .withIsoCountry("NL")
-                .withMunicipality("NL");
-
-        airports.add(a2);
+        airports = db.getAirports();
 
         mAdapter = new AirportItemAdapter(this, airports);
+        mAdapter.setOnItemClickListener(this);
         mRecyclerview.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onItemClick(Airport airport) {
+        Intent i = new Intent(MainActivity.this, AirportDetailActivity.class);
+        i.putExtra("airport", airport);
+        startActivity(i);
     }
 }

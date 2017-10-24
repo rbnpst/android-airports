@@ -10,7 +10,7 @@ import com.zhukic.sectionedrecyclerview.SectionedRecyclerViewAdapter;
 
 import java.util.List;
 
-import me.rpst.android_airports.Airport;
+import me.rpst.android_airports.models.Airport;
 import me.rpst.android_airports.R;
 
 /**
@@ -20,6 +20,8 @@ import me.rpst.android_airports.R;
 public abstract class BaseAirportItemAdapter extends SectionedRecyclerViewAdapter<BaseAirportItemAdapter.SubheaderHolder, BaseAirportItemAdapter.AirportViewHolder> {
 
     List<Airport> airports;
+
+    OnItemClickListener onItemClickListener;
 
     public BaseAirportItemAdapter(List<Airport> airports) {
         this.airports = airports;
@@ -66,5 +68,13 @@ public abstract class BaseAirportItemAdapter extends SectionedRecyclerViewAdapte
             textName = (TextView) itemView.findViewById(R.id.text_name);
             textIcao = (TextView) itemView.findViewById(R.id.text_icao);
         }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Airport airport);
     }
 }

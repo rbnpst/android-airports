@@ -1,10 +1,12 @@
-package me.rpst.android_airports;
+package me.rpst.android_airports.models;
+
+import java.io.Serializable;
 
 /**
  * Created by robin on 23/10/2017.
  */
 
-public class Airport {
+public class Airport implements Serializable {
 
     private String icao;
     private String name;
