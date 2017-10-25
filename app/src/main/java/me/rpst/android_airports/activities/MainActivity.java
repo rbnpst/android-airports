@@ -22,28 +22,24 @@ import me.rpst.android_airports.helpers.DatabaseHelper;
 
 public class MainActivity extends AppCompatActivity implements BaseAirportItemAdapter.OnItemClickListener, SearchView.OnQueryTextListener {
 
-    private RecyclerView mRecyclerview;
     private BaseAirportItemAdapter mAdapter;
-    private List<Airport> airports;
-    private DatabaseHelper db;
-    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(mToolbar);
 
-        mRecyclerview = (RecyclerView) findViewById(R.id.recycler_view_airports);
+        RecyclerView mRecyclerview = (RecyclerView) findViewById(R.id.recycler_view_airports);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerview.setHasFixedSize(true);
 
-        db = new DatabaseHelper(this);
+        DatabaseHelper db = new DatabaseHelper(this);
 
-        airports = db.getAirports();
+        List<Airport> airports = db.getAirports();
 
         mAdapter = new AirportItemAdapter(this, airports);
         mAdapter.setOnItemClickListener(this);
@@ -77,19 +73,5 @@ public class MainActivity extends AppCompatActivity implements BaseAirportItemAd
     public boolean onQueryTextChange(String newText) {
         mAdapter.getFilter().filter(newText);
         return true;
-    }
-
-    private static List<Airport> filter(List<Airport> models, String query) {
-        final String lowerCaseQuery = query.toLowerCase();
-
-        final List<Airport> filteredModelList = new ArrayList<>();
-        for (Airport model : models) {
-            final String name = model.getName().toLowerCase();
-            final String icao = String.valueOf(model.getIcao());
-            if (name.contains(lowerCaseQuery) || icao.contains(lowerCaseQuery)) {
-                filteredModelList.add(model);
-            }
-        }
-        return filteredModelList;
     }
 }
